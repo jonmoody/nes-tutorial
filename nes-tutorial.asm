@@ -17,6 +17,8 @@ pointerBackgroundHighByte .rs 1
 
 RESET:
   JSR LoadBackground
+  JSR LoadPalettes
+  JSR LoadAttributes
 
   LDA #%10000000   ; Enable NMI, sprites and background on table 0
   STA $2000
@@ -59,6 +61,37 @@ LoadBackground:
   BNE .Loop
   RTS
 
+LoadPalettes:
+  LDA $2002
+  LDA #$3F
+  STA $2006
+  LDA #$00
+  STA $2006
+
+  LDX #$00
+.Loop:
+  LDA palettes, x
+  STA $2007
+  INX
+  CPX #$20
+  BNE .Loop
+  RTS
+
+LoadAttributes:
+  LDA $2002
+  LDA #$23
+  STA $2006
+  LDA #$C0
+  STA $2006
+  LDX #$00
+.Loop:
+  LDA attributes, x
+  STA $2007
+  INX
+  CPX #$40
+  BNE .Loop
+  RTS
+
 NMI:
   RTI
 
@@ -67,6 +100,12 @@ NMI:
 
 background:
   .include "graphics/background.asm"
+
+palettes:
+  .include "graphics/palettes.asm"
+
+attributes:
+  .include "graphics/attributes.asm"
 
   .org $FFFA
   .dw NMI
