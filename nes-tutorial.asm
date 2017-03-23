@@ -19,6 +19,7 @@ RESET:
   JSR LoadBackground
   JSR LoadPalettes
   JSR LoadAttributes
+  JSR LoadSprites
 
   LDA #%10000000   ; Enable NMI, sprites and background on table 0
   STA $2000
@@ -92,7 +93,22 @@ LoadAttributes:
   BNE .Loop
   RTS
 
+LoadSprites:
+  LDX #$00
+.Loop:
+  LDA sprites, x
+  STA $0300, x
+  INX
+  CPX #$18
+  BNE .Loop
+  RTS
+
 NMI:
+  LDA #$00
+  STA $2003
+  LDA #$03
+  STA $4014
+
   RTI
 
   .bank 1
@@ -106,6 +122,9 @@ palettes:
 
 attributes:
   .include "graphics/attributes.asm"
+
+sprites:
+  .include "graphics/sprites.asm"
 
   .org $FFFA
   .dw NMI
