@@ -12,6 +12,20 @@
 pointerBackgroundLowByte  .rs 1
 pointerBackgroundHighByte .rs 1
 
+shipTile1Y = $0300
+shipTile2Y = $0304
+shipTile3Y = $0308
+shipTile4Y = $030C
+shipTile5Y = $0310
+shipTile6Y = $0314
+
+shipTile1X = $0303
+shipTile2X = $0307
+shipTile3X = $030B
+shipTile4X = $030F
+shipTile5X = $0313
+shipTile6X = $0317
+
   .bank 0
   .org $C000
 
@@ -119,19 +133,19 @@ ReadUp:
   AND #%00000001
   BEQ EndReadUp
 
-  LDA $0300
+  LDA shipTile1Y
   SEC
   SBC #$01
-  STA $0300
-  STA $0304
-  STA $0308
+  STA shipTile1Y
+  STA shipTile2Y
+  STA shipTile3Y
 
-  LDA $030C
+  LDA shipTile4Y
   SEC
   SBC #$01
-  STA $030C
-  STA $0310
-  STA $0314
+  STA shipTile4Y
+  STA shipTile5Y
+  STA shipTile6Y
 EndReadUp:
 
 ReadDown:
@@ -139,19 +153,19 @@ ReadDown:
   AND #%00000001
   BEQ EndReadDown
 
-  LDA $0300
+  LDA shipTile1Y
   CLC
   ADC #$01
-  STA $0300
-  STA $0304
-  STA $0308
+  STA shipTile1Y
+  STA shipTile2Y
+  STA shipTile3Y
 
-  LDA $030C
+  LDA shipTile4Y
   CLC
   ADC #$01
-  STA $030C
-  STA $0310
-  STA $0314
+  STA shipTile4Y
+  STA shipTile5Y
+  STA shipTile6Y
 EndReadDown:
 
 ReadLeft:
@@ -159,23 +173,23 @@ ReadLeft:
   AND #%00000001
   BEQ EndReadLeft
 
-  LDA $0303
+  LDA shipTile1X
   SEC
   SBC #$01
-  STA $0303
-  STA $030F
+  STA shipTile1X
+  STA shipTile4X
 
-  LDA $0307
+  LDA shipTile2X
   SEC
   SBC #$01
-  STA $0307
-  STA $0313
+  STA shipTile2X
+  STA shipTile5X
 
-  LDA $030B
+  LDA shipTile3X
   SEC
   SBC #$01
-  STA $030B
-  STA $0317
+  STA shipTile3X
+  STA shipTile6X
 EndReadLeft:
 
 ReadRight:
@@ -183,23 +197,23 @@ ReadRight:
   AND #%00000001
   BEQ EndReadRight
 
-  LDA $0303
+  LDA shipTile1X
   CLC
   ADC #$01
-  STA $0303
-  STA $030F
+  STA shipTile1X
+  STA shipTile4X
 
-  LDA $0307
+  LDA shipTile2X
   CLC
   ADC #$01
-  STA $0307
-  STA $0313
+  STA shipTile2X
+  STA shipTile5X
 
-  LDA $030B
+  LDA shipTile3X
   CLC
   ADC #$01
-  STA $030B
-  STA $0317
+  STA shipTile3X
+  STA shipTile6X
 EndReadRight:
 
   RTS
