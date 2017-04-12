@@ -154,8 +154,54 @@ ReadDown:
   STA $0314
 EndReadDown:
 
+ReadLeft:
   LDA $4016       ; Player 1 - Left
+  AND #%00000001
+  BEQ EndReadLeft
+
+  LDA $0303
+  SEC
+  SBC #$01
+  STA $0303
+  STA $030F
+
+  LDA $0307
+  SEC
+  SBC #$01
+  STA $0307
+  STA $0313
+
+  LDA $030B
+  SEC
+  SBC #$01
+  STA $030B
+  STA $0317
+EndReadLeft:
+
+ReadRight:
   LDA $4016       ; Player 1 - Right
+  AND #%00000001
+  BEQ EndReadRight
+
+  LDA $0303
+  CLC
+  ADC #$01
+  STA $0303
+  STA $030F
+
+  LDA $0307
+  CLC
+  ADC #$01
+  STA $0307
+  STA $0313
+
+  LDA $030B
+  CLC
+  ADC #$01
+  STA $030B
+  STA $0317
+EndReadRight:
+
   RTS
 
 NMI:
