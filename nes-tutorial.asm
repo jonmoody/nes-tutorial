@@ -103,11 +103,68 @@ LoadSprites:
   BNE .Loop
   RTS
 
+ReadPlayerOneControls:
+  LDA #$01
+  STA $4016
+  LDA #$00
+  STA $4016
+
+  LDA $4016       ; Player 1 - A
+  LDA $4016       ; Player 1 - B
+  LDA $4016       ; Player 1 - Select
+  LDA $4016       ; Player 1 - Start
+
+ReadUp:
+  LDA $4016       ; Player 1 - Up
+  AND #%00000001
+  BEQ EndReadUp
+
+  LDA $0300
+  SEC
+  SBC #$01
+  STA $0300
+  STA $0304
+  STA $0308
+
+  LDA $030C
+  SEC
+  SBC #$01
+  STA $030C
+  STA $0310
+  STA $0314
+EndReadUp:
+
+ReadDown:
+  LDA $4016       ; Player 1 - Down
+  AND #%00000001
+  BEQ EndReadDown
+
+  LDA $0300
+  CLC
+  ADC #$01
+  STA $0300
+  STA $0304
+  STA $0308
+
+  LDA $030C
+  CLC
+  ADC #$01
+  STA $030C
+  STA $0310
+  STA $0314
+EndReadDown:
+
+  LDA $4016       ; Player 1 - Left
+  LDA $4016       ; Player 1 - Right
+  RTS
+
 NMI:
   LDA #$00
   STA $2003
   LDA #$03
   STA $4014
+
+  JSR ReadPlayerOneControls
 
   RTI
 
